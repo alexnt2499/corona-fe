@@ -1,0 +1,103 @@
+* {
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+body {
+    background-color: black;
+    padding: 10px;
+}
+
+
+.text {
+    color: white;
+    font-size: 23px;
+}
+
+.text2 {
+    color: white;
+    font-size: 15px;
+    font-weight: lighter;
+
+}
+
+.row-1-col-2{
+    background-color: #212121;
+    height: 800px;
+    max-height: 800px;
+    border: 1px solid gray;
+    border-radius: 1px;
+    padding: 10px;
+    overflow: 'scroll';
+  
+}
+
+.row-1{
+    background-color: #212121;
+    height: 90px;
+    border: 1px solid gray;
+    border-radius: 1px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.row-2{
+    height: 90px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.col-style {
+
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.avatar{
+    border-radius: 10px;
+    border: 1px solid whitesmoke;
+}
+
+.buttonStyle {
+    background-color: tomato;
+    padding : 0 10px 0 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 1s;
+}
+
+.buttonStyle:hover {
+    background-color: peru;
+    padding : 0 20px 0 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 1s;
+}
+
+.buttonStyleFa {
+    background-color: royalblue;
+    padding : 0 10px 0 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 1s;
+}
+
+.buttonStyleFa:hover {
+    background-color: slateblue;
+    padding : 0 20px 0 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 1s;
+}
+
+.row-2-colum{
+    height: 90px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+}
