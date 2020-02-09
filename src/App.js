@@ -1,23 +1,44 @@
-import React, {useEffect,useState} from 'react';
+import React, {useEffect,useState,useRef} from 'react';
 import './css/index.css';
-import {Container,Row,Col,Badge,Spinner} from 'react-bootstrap';
+import {Container,Row,Col,Badge,Spinner,ToggleButtonGroup , ToggleButton,Overlay,Tooltip} from 'react-bootstrap';
 import logoSubee from './../src/assets/image/icon.jpg';
-import { FaBell,FaFacebookSquare ,FaGlobeAsia , FaPlusSquare,FaHaykal,FaSyringe,FaPencilAlt } from 'react-icons/fa';
-import Mapss from './component/Map';
+import { 
+  FaBell,
+  FaFacebookSquare ,
+  FaGlobeAsia , 
+  FaPlusSquare,
+  FaHaykal,
+  FaSyringe,
+  FaPencilAlt,
+  FaRegCalendarAlt,
+  FaRegCopyright,
+  FaPhone,
+  FaCode } from 'react-icons/fa';
 import Axios from 'axios';
 import ModalEmail from './../src/component/ModelEmail';
-
+import TabMap from './../src/component/TabMap';
+import moment from 'moment';
+import VnIcon from './../src/assets/image/vnicon.png';
 function App() {
   const [listData,setListData] = useState([]);
+  const [listDataVN,setListDataVN] = useState([]);
+
   const [dataTotal,setDataTotal] = useState({});
   const [loading,setLoading] = useState(true);
   const [openModal,setOpenModal] = useState(false);
+  const [key, setKey] = useState([1]);
+  const [check, setCheck] = useState(1);
+  const [show, setShow] = useState(false);
+  const target = useRef(null);
 
   useEffect(() => {
     const getData = async () => {
         setLoading(true);
+        Axios.get('https://coronavirusupdatevn.herokuapp.com/ViewUp')
        let getData = await Axios.get('https://coronavirusupdatevn.herokuapp.com/api/public/getAllDataCoronaByDate?date=2020-2-7');
-        let sumNhiem = 0;
+       let getDataVN = await Axios.get('https://coronavirusupdatevn.herokuapp.com/api/public/getAllDataCoronaByDateInVietNam?date=2020-2-7');
+       
+       let sumNhiem = 0;
         let sumChet = 0;
         let sumKhoi = 0;
         for (let index = 0; index < getData.data.data.length; index++) {
@@ -29,7 +50,6 @@ function App() {
           sumNhiem += Number(nhiem);
           sumChet += Number(deaths);
           sumKhoi += Number(khoi);
-          console.log( nhiem);
 
         }
         
@@ -39,6 +59,7 @@ function App() {
           sumKhoi
         })
        setListData(getData.data.data);
+       setListDataVN(getDataVN.data.data)
        setLoading(false);
 
     }
@@ -65,10 +86,18 @@ function App() {
 
                     <Col className='row-2' md={3}>
                      
-                        <div className={'buttonStyleFa'} style={{marginRight : 10}}>
-                              <FaFacebookSquare color={'white'} style={{marginRight : 3}}></FaFacebookSquare>
-                              <span style={{color : 'white', fontSize : 10}}>Chia sẻ</span>
+                        <div className={'buttonStyleFa'} ref={target} onClick={() => setShow(!show)} style={{marginRight : 10}}>
+                              <FaCode color={'white'} style={{marginRight : 3}}></FaCode>
+                              <span style={{color : 'white', fontSize : 10}}>Nhúng</span>
                         </div>
+                        <Overlay target={target.current} show={show} placement="bottom">
+                        {props => (
+                          <Tooltip id="overlay-example" {...props}>
+                            {'Code : <iframe width="100%" height="720px" src="https://coronavirusupdatevn.herokuapp.com/"></iframe>'}
+                          </Tooltip>
+                        )}
+                      </Overlay>
+
 
                         <div onClick={() => {setOpenModal(true)}} className={'buttonStyle'}>
                               <FaBell color={'white'} style={{marginRight : 3}}></FaBell>
@@ -83,13 +112,13 @@ function App() {
                       <table>
                         <td>
                           <tr className={'text2'}>
-                            Cập nhập lần cuối lúc {new Date().toString()}
+                            <FaRegCalendarAlt></FaRegCalendarAlt> Cập nhập lần cuối lúc {moment(new Date().toString()).format('DD/MM/YYYY HH:mm')}
                           </tr>
                           <tr className={'text2'}>
-                            Nguồn : WHO, CDC, NHC, DXY & Bộ Y Tế Việt Nam. 
+                            <FaRegCopyright></FaRegCopyright> Nguồn : WHO, CDC, NHC, DXY & Bộ Y Tế Việt Nam.
                           </tr>
                           <tr className={'text2'}>
-                            Liên hệ : <a href='#'>ntd.codervn@gmail.com</a>
+                            <FaPhone></FaPhone> Liên hệ : <a href='#'>ntd.codervn@gmail.com</a> 
                           </tr>
                         </td>
                       </table>
@@ -113,6 +142,14 @@ function App() {
                           <Row style={{marginTop : 10}}>
                            
                               <Col md={12}>
+                              <ToggleButtonGroup style={{marginBottom : 10}} type="radio" name="options" defaultValue={1} onChange={(e) => setCheck(e) }>
+                                  <ToggleButton  variant={check == 1 ? 'light' : 'dark'} className='textTab' value={1}><FaGlobeAsia></FaGlobeAsia> Thế giới</ToggleButton>
+                                  <ToggleButton  variant={check == 2 ? 'light' : 'dark'}  className='textTab' value={2}>
+                                    <img src={VnIcon} width={20} height={15} style={{marginRight : 5}}></img>
+                                    Việt Nam</ToggleButton>
+                              </ToggleButtonGroup>
+
+                         
                                 <div style={{justifyContent : 'center', display :'flex', alignItems : 'center' , marginBottom : 20}}>
                                
                                   <Badge variant="dark">0</Badge>
@@ -130,7 +167,7 @@ function App() {
                                 </div>
                                 <div className={'text2'} style={{marginBottom : 10, fontWeight : 'bold'}}><FaGlobeAsia></FaGlobeAsia> Thống kê ca nhiễm theo quốc gia</div>
                                 {loading ? <div style={{width : '100%', display :'flex' , justifyContent : 'center', alignItems : 'center'}}><Spinner style={{textAlign : 'center'}} animation="border" variant="light" /></div> : <table>
-                                  {listData.map((element) => {
+                                  {check == 1 ? listData.map((element) => {
                                      return (<tr>
                                       <td> <div className={'text2'}>{element.data.country}</div></td>
                                       <td> <div className={'text2'} style={{marginLeft : 10}}> <Badge variant="dark">{element.data.confirmed != '' ? element.data.confirmed.replace(',','') : 0}</Badge></div></td>
@@ -138,7 +175,14 @@ function App() {
                                       <td> <div className={'text2'}> <Badge variant="success">{element.data.recuperate != '' ? element.data.recuperate.replace(',','') : 0}</Badge></div></td>
                                       
                                     </tr>)
-                                  })}
+                                  }) : listDataVN.map((element) => {
+                                    return (<tr>
+                                     <td> <div className={'text2'}>{element.data.country}</div></td>
+                                     <td> <div className={'text2'} style={{marginLeft : 10}}> <Badge variant="dark">{element.data.confirmed != '' ? element.data.confirmed.replace(',','') : 0}</Badge></div></td>
+                                     <td> <div className={'text2'}  style={{marginRight : 10, marginLeft : 10}}> <Badge variant="danger">{element.data.deaths != '' ? element.data.deaths.replace(',','') : 0}</Badge></div></td>
+                                     
+                                   </tr>)
+                                 })}
                                 </table>}
                               </Col>
 
@@ -148,8 +192,8 @@ function App() {
                     </Col>
 
                     <Col className='row-1-col-2' md={6}>
-                      <p className='text2' style={{textAlign : 'center'}}> <FaGlobeAsia></FaGlobeAsia> Biểu đồ lây nhiễm toàn thế giới</p>
-                     <Mapss></Mapss>
+                      <p className='text2' style={{textAlign : 'center',}}> <FaGlobeAsia></FaGlobeAsia> Biểu đồ lây nhiễm toàn thế giới</p>
+                     <TabMap></TabMap>
 
                     </Col>
 
@@ -206,7 +250,7 @@ function App() {
                           </Col>
                           <Col md={12} style={{display : 'flex', flexDirection : 'row', alignItems : 'center'}}>
                             <div style={{backgroundColor : 'red', marginLeft : 38, marginTop : 10 , width : 20, height : 20, borderRadius : 10, opacity : 0.3}}></div>
-                            <div className='text2' style={{marginLeft : 10}}>Từ 0-10</div>
+                            <div className='text2' style={{marginLeft : 10}}>Từ 1-10</div>
                           </Col>
                         </Row>
                     </Col>

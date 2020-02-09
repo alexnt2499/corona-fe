@@ -7,7 +7,7 @@ function Mapss(props) {
     const Token = 'pk.eyJ1IjoiZGVubmEyNDcxOTk5IiwiYSI6ImNrNmNmd2x3ZDEzdm0zanJ5ZmxpY3dseDAifQ.4vQDLt0E5wV7RNE9IgSKBQ';
     const [viewport, setViewport] = useState({
         width: '100%',
-        height: 745,
+        height: 720,
         latitude: 10.823099,
         longitude: 106.629662,
         zoom: 2
@@ -25,7 +25,6 @@ function Mapss(props) {
     useEffect(() => {
         const getData = async () => {
            let getData = await Axios.get('https://coronavirusupdatevn.herokuapp.com/api/public/getAllDataCoronaByDate?date=2020-2-7');
-           console.log('data');
             
            setListData(getData.data.data);
         }
@@ -88,7 +87,7 @@ function Mapss(props) {
                         </Marker>
                     )
                 }
-                else if(value.data.confirmed >= 0 && value.data.confirmed < 10) {
+                else if(value.data.confirmed > 0 && value.data.confirmed < 10) {
                     return (
                         <Marker  latitude={value.data.latitude} longitude={value.data.longitude} offsetLeft={-20} offsetTop={-10}>
                             <div onMouseOut={() => {setShowPopup(false)}}  onMouseOver={() => { 

@@ -44,8 +44,7 @@ function ModelEmail(props) {
           <h4 className='text2' >Nhập email để được nhận thông báo nhanh nhất ^.^</h4>
           <Form.Group controlId="formBasicEmail">
             
-            <Form.Control onChange={(e) => { console.log(e.target.value);
-             ;setEmail(e.target.value)}} type="email" required placeholder="Enter email" />
+            <Form.Control onChange={(e) => { setEmail(e.target.value)}} type="email" required placeholder="Enter email" />
             <Form.Text className="text-muted">
             </Form.Text>
         </Form.Group>

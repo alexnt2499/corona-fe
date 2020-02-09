@@ -23,8 +23,8 @@ body {
 
 .row-1-col-2{
     background-color: #212121;
-    height: 800px;
-    max-height: 800px;
+    height: 820px;
+    max-height: 820px;
     border: 1px solid gray;
     border-radius: 1px;
     padding: 10px;
@@ -100,4 +100,16 @@ body {
     justify-content: flex-start;
     align-items: center;
     flex-direction: row;
+}
+
+.textTab{
+    color: white;
+    font-size: 15px;
+    font-weight: lighter;
+    
+}
+
+.textTab:hover {
+    color: white;
+    border: none;
 }
