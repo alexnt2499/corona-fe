@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+<img src='https://github.com/ntdcodervn/corona-api/blob/master/file/image/image1.PNG'>
+
 ## Available Scripts
 
 In the project directory, you can run:
